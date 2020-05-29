@@ -1,0 +1,11 @@
+Flask
+gunicorn
+pytest
+python-dotenv
+python-freshdesk
+oslo.messaging
+eventlet
+python-keystoneclient
+python-novaclient
+python-glanceclient
+PyJWT
