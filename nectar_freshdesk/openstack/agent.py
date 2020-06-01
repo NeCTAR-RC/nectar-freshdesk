@@ -141,7 +141,7 @@ class Agent(object):
 
 
 class main():
-    config.parse_args(sys.argv)
+    config.init(sys.argv[1:])
     LOG.info('Starting agent')
     agent = Agent()
     agent.run()
