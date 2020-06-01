@@ -64,8 +64,3 @@ Enter the following:
     "email": "{{ticket.contact.email}}"
  }
 ``` 
-
-
-### Testing
-
-curl -X POST -H "Content-Type: application/json" -d '{"action": "update", "ticket_id": "574", "source": "What about the instance 64cc9d74-230a-4df6-a435-d79628c78dc5 or how about the IP address 115.146.82.195 maybe", "email": "andrew.botting@unimelb.edu.au"}' https://hostname/openstack/addinfo
