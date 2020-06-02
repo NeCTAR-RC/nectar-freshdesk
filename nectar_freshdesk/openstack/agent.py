@@ -36,9 +36,6 @@ LOG = log.getLogger(__name__)
 
 class FreshDeskOpenStackEndpoint(object):
 
-    def __init__(self):
-        self.resources = {}
-
     def info(self, ctxt, info):
         LOG.info('Processing ticket')
         details = []
@@ -142,6 +139,7 @@ class Agent(object):
 
 class main():
     config.init(sys.argv[1:])
+    config.setup_logging(CONF)
     LOG.info('Starting agent')
     agent = Agent()
     agent.run()

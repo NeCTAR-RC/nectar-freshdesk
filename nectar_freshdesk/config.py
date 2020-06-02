@@ -19,8 +19,6 @@ from oslo_config import cfg
 from oslo_log import log
 
 LOG = log.getLogger(__name__)
-
-
 CONF = cfg.CONF
 
 # Tag on ticket to indicate if it's been processed
@@ -74,7 +72,7 @@ cfg.CONF.register_opts(auth_opts, group='auth')
 
 log.register_options(cfg.CONF)
 
-ks_loading.register_auth_conf_options(cfg.CONF, 'keystone_authtoken')
+ks_loading.register_auth_conf_options(cfg.CONF, 'service_auth')
 
 
 def init(args=[], conf_file='/etc/nectar-freshdesk/nectar-freshdesk.conf'):

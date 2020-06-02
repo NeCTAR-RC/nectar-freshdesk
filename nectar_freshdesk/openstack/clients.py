@@ -40,7 +40,7 @@ def get_session():
 
     if not _AUTH:
         _AUTH = ks_loading.load_auth_from_conf_options(
-                CONF, 'keystone_authtoken')
+                CONF, 'service_auth')
     if not _SESSION:
         _SESSION = ks_session.Session(auth=_AUTH)
     return _SESSION
