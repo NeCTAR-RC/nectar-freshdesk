@@ -1,10 +1,11 @@
 Flask
-gunicorn
-pytest
-python-dotenv
 python-freshdesk
+keystoneauth1
+oslo.config
+oslo.context
+oslo.log
 oslo.messaging
-eventlet
+oslo.middleware
 python-keystoneclient
 python-novaclient
 python-glanceclient
