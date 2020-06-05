@@ -32,52 +32,83 @@ CONF = config.cfg.CONF
 OSLO_CONTEXT = context.RequestContext()
 LOG = log.getLogger(__name__)
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+JWT_PARAMS = ['nonce', 'state']
+
+bp = Blueprint('auth', __name__)
 
 
-@bp.route('/sso')
-def index():
+@bp.route('/login')
+def login():
+    if all(p in request.args for p in JWT_PARAMS):
+        for p in JWT_PARAMS:
+            session[p] = request.args.get(p)
     return redirect(CONF.auth.aaf_login_url)
 
 
-@bp.route('/login', methods=['POST'])
-def login():
+@bp.route('/cb', methods=['POST'])
+def callback():
     try:
         jwt_secret = CONF.auth.aaf_secret
-        assertion = request.form.get('assertion')
-
         audience = CONF.auth.service_url
-
+        assertion = request.form.get('assertion')
         verified_jwt = jwt.decode(assertion, jwt_secret,
                                   audience=audience, algorithms='HS256')
-
-        session['attributes'] = verified_jwt['https://aaf.edu.au/attributes']
-
         attrs = verified_jwt['https://aaf.edu.au/attributes']
 
-        session['attributes'] = attrs
-        session['jwt'] = verified_jwt
-        session['jws'] = assertion
+        if all(p in session for p in JWT_PARAMS):
+            return freshdesk_jwt(attrs)
+        else:
+            return freshdesk_simple_sso(attrs)
 
-        url = CONF.freshdesk.sso_url
-        key = CONF.freshdesk.sso_key
-
-        name = attrs.get('cn')
-        email = attrs.get('mail')
-        ts = str(int(time.time()))
-
-        # Freshdesk special string uses for the signature
-        hash_source = name + key + email + ts
-        hash_digest = hmac.new(key.encode(),
-                               hash_source.encode(),
-                               hashlib.md5).hexdigest()
-        params = {
-            'name': name,
-            'email': email,
-            'timestamp': ts,
-            'hash': hash_digest,
-        }
-        result = '{}?{}'.format(url, urllib.parse.urlencode(params))
-        return redirect(result)
     except jwt.ExpiredSignature:
-        return make_response('expired')
+        return make_response('Expired Signature', 400)
+
+
+def freshdesk_simple_sso(attrs):
+    url = CONF.freshdesk.sso_url
+    key = CONF.freshdesk.sso_key
+
+    name = attrs.get('cn')
+    email = attrs.get('mail')
+    ts = str(int(time.time()))
+
+    # Freshdesk special string uses for the signature
+    hash_source = name + key + email + ts
+    hash_digest = hmac.new(key.encode(),
+                           hash_source.encode(),
+                           hashlib.md5).hexdigest()
+    params = {
+        'name': name,
+        'email': email,
+        'timestamp': ts,
+        'hash': hash_digest,
+    }
+    result = '{}?{}'.format(url, urllib.parse.urlencode(params))
+    return redirect(result)
+
+
+def freshdesk_jwt(attrs):
+    url = CONF.freshdesk.sso_url
+    key_file = CONF.freshdesk.sso_key
+
+    # Freshdesk required params
+    # https://support.freshworks.com/support/solutions/articles/50000000670-how-to-configure-sso-with-custom-jwt-implementation
+    payload = {
+        'sub': attrs.get('edupersonprincipalname'),
+        'name': attrs.get('displayname'),
+        'given_name': attrs.get('givenname'),
+        'family_name': attrs.get('surname'),
+        'email': attrs.get('mail'),
+        'iat': str(int(time.time())),
+        'nonce': session['nonce'],
+    }
+
+    with open(key_file) as key:
+        id_token = jwt.encode(payload, key.read(), algorithm='RS256')
+
+    params = {
+        'state': session['state'],
+        'id_token': id_token,
+    }
+    result = '{}?{}'.format(url, urllib.parse.urlencode(params))
+    return redirect(result)

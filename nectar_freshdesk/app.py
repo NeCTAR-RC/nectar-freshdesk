@@ -41,8 +41,11 @@ def create_app(conf_file=None, init_config=True):
     # OSLO healthcheck middleware
     app.wsgi_app = healthcheck.Healthcheck(app.wsgi_app)
 
-    # Apps
-    app.register_blueprint(openstack.bp)
-    app.register_blueprint(auth.bp)
+    # OpenStack ID app
+    app.register_blueprint(openstack.bp, url_prefix='/openstack')
+
+    # Auth supporting new and old URL prefixes
+    app.register_blueprint(auth.bp, url_prefix='/auth')
+    app.register_blueprint(auth.bp, url_prefix='/pip/aaf')
 
     return app

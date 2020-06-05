@@ -27,7 +27,7 @@ CONF = config.CONF
 OSLO_CONTEXT = context.RequestContext()
 LOG = log.getLogger(__name__)
 
-bp = Blueprint('api', __name__, url_prefix='/openstack')
+bp = Blueprint('api', __name__)
 
 
 @bp.route('/addinfo', methods=['POST'])

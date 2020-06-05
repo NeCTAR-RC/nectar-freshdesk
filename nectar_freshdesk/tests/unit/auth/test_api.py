@@ -17,5 +17,5 @@ from nectar_freshdesk.tests.unit import base
 class TestAuthApi(base.TestCase):
 
     def test_sso_redirect(self):
-        response = self.client.get('/auth/sso')
+        response = self.client.get('/auth/login')
         self.assertEqual(response.status_code, 302)
