@@ -37,7 +37,7 @@ JWT_PARAMS = ['nonce', 'state']
 bp = Blueprint('auth', __name__)
 
 
-@bp.route('/login')
+@bp.route('/login', methods=['GET'])
 def login():
     if all(p in request.args for p in JWT_PARAMS):
         for p in JWT_PARAMS:
