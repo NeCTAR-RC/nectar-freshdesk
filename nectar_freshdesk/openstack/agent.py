@@ -82,7 +82,11 @@ class FreshDeskOpenStackEndpoint(object):
                 for ipv4 in ipv4s:
                     # Resolve instance IDs and add to list
                     for ins in clients.list_instances(ip=ipv4):
-                        uuids.append(ins.id)
+                        # Nova does a greedy regex so we just need to confirm
+                        # our instance actually does have the address we want
+                        if ipv4 in [y['addr'] for x in ins.addresses.values()
+                                    for y in x]:
+                            uuids.append(ins.id)
 
                 for uuid in set(uuids):
                     uuid_info = self.process_uuid(uuid)
