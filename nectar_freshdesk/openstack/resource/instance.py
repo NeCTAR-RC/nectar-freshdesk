@@ -108,8 +108,19 @@ def get_instance(instance_id):
                 v = '-'
             pt.add_row([k, v])
 
+    # Get instance actions
+    actions = nc.instance_action.list(instance_id)
+    at = PrettyTable(['action', 'date'])
+    for a in actions:
+        at.add_row([a.action, a.start_time])
+
     output = '<b>Details for Instance {}</b>'.format(info.get('id'))
     output += pt.get_html_string(attributes={
+        'border': 1,
+        'style': 'border-width: 1px; border-collapse: collapse;'
+    })
+    output += '<br><b>Actions for Instance {}</b>'.format(info.get('id'))
+    output += at.get_html_string(attributes={
         'border': 1,
         'style': 'border-width: 1px; border-collapse: collapse;'
     })
