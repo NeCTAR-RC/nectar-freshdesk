@@ -74,14 +74,14 @@ def get_project(project_id):
     return project
 
 
-def get_user(name):
-    """Get a user from a name"""
+def get_user(user_id):
+    """Get a user from an id"""
     k = get_keystone_client()
     user = None
     try:
-        user = k.users.find(name=name)
+        user = k.users.get(user_id)
     except ks_exc.NotFound:
-        LOG.debug('User not found: %s', name)
+        LOG.debug('User not found: %s', user_id)
     return user
 
 

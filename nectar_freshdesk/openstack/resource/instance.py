@@ -110,9 +110,11 @@ def get_instance(instance_id):
 
     # Get instance actions
     actions = nc.instance_action.list(instance_id)
-    at = PrettyTable(['action', 'date'])
+    at = PrettyTable(['action', 'date', 'user', 'project'])
     for a in actions:
-        at.add_row([a.action, a.start_time])
+        user = clients.get_user(a.user_id)
+        project = clients.get_project(a.project_id)
+        at.add_row([a.action, a.start_time, user.name, project.name])
 
     output = '<b>Details for Instance {}</b>'.format(info.get('id'))
     output += pt.get_html_string(attributes={
