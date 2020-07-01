@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b11e06d4_6433b670",
+        "filename": "nectar_freshdesk/openstack/resource/project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-01T23:50:56Z",
+      "side": 1,
+      "message": "instead of excluding stuff here it might be better to specify what we want to include?",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 72
+      },
+      "revId": "0b90b2ee36a7742060bc967052b541d6ec32b976",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
