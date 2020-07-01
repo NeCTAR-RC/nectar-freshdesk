@@ -28,6 +28,7 @@ LOG = log.getLogger(__name__)
 
 def get_project(project_id):
     kc = clients.get_keystone_client()
+    nc = clients.get_nova_client()
     try:
         project = kc.projects.get(project_id)
     except ks_exc.NotFound:
@@ -61,8 +62,24 @@ def get_project(project_id):
                 v = '-'
             pt.add_row([k, v])
 
+    # get basic quota info
+    quotas = nc.quotas.get(project_id)
+    q = quotas._info.copy()
+    qt = PrettyTable(['Property', 'Value'], caching=False)
+    qt.align = 'l'
+    include = ['cores', 'floating_ips', 'instances', 'ram',
+               'security_group_rules', 'security_groups']
+    for item in include:
+        if item in q:
+            qt.add_row([item, q.get(item)])
+
     output = '<b>Details for Project {}</b>'.format(info.get('id'))
     output += pt.get_html_string(attributes={
+        'border': 1,
+        'style': 'border-width: 1px; border-collapse: collapse;'
+    })
+    output += '<b>Quota for Project {}</b>'.format(info.get('id'))
+    output += qt.get_html_string(attributes={
         'border': 1,
         'style': 'border-width: 1px; border-collapse: collapse;'
     })
