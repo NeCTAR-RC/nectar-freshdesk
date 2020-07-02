@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "356c70d5_a9e9d7e8",
+        "filename": "nectar_freshdesk/openstack/resource/instance.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-02T01:48:28Z",
+      "side": 1,
+      "message": "this method can return None so this code should be able to handle when project \u003d None",
+      "range": {
+        "startLine": 73,
+        "startChar": 22,
+        "endLine": 73,
+        "endChar": 53
+      },
+      "revId": "5c8e0589187b58751d70a59e096defeab0008ec2",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e9ea0bf_0524902b",
+        "filename": "nectar_freshdesk/openstack/resource/instance.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-02T01:48:28Z",
+      "side": 1,
+      "message": "ditto here :-)",
+      "range": {
+        "startLine": 76,
+        "startChar": 29,
+        "endLine": 76,
+        "endChar": 36
+      },
+      "revId": "5c8e0589187b58751d70a59e096defeab0008ec2",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
