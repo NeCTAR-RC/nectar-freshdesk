@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c38e9b57_6533a42d",
+        "filename": "nectar_freshdesk/openstack/resource/instance.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-02T04:03:23Z",
+      "side": 1,
+      "message": "this will need to move up a line because you attempt to use project.id and project.name",
+      "range": {
+        "startLine": 76,
+        "startChar": 12,
+        "endLine": 76,
+        "endChar": 23
+      },
+      "revId": "224922728396371eeea698fc1998e573c5aefc79",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
