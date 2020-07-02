@@ -72,6 +72,13 @@ def get_instance(instance_id):
         try:
             project = clients.get_project(project_id)
             info['project_id'] = '%s (%s)' % (project.name, project.id)
+            # populate instance project table detail
+            if project:
+                p = project._info
+                tt = PrettyTable(['Property', 'Value'], caching=False)
+                tt.align = 'l'
+                for k, v in p.items():
+                    tt.add_row([k, v])
         except Exception:
             info['project_id'] = 'Project not found (%s)' % project_id
 
@@ -111,6 +118,7 @@ def get_instance(instance_id):
     # Get instance actions
     actions = nc.instance_action.list(instance_id)
     at = PrettyTable(['action', 'date', 'user', 'project'])
+    at.align = 'l'
     for a in actions:
         user = clients.get_user(a.user_id)
         project = clients.get_project(a.project_id)
@@ -121,6 +129,12 @@ def get_instance(instance_id):
         'border': 1,
         'style': 'border-width: 1px; border-collapse: collapse;'
     })
+    if project:
+        output += '<b>Project for Instance {}</b>'.format(info.get('id'))
+        output += tt.get_html_string(attributes={
+            'border': 1,
+            'style': 'border-width: 1px; border-collapse: collapse;'
+           })
     output += '<br><b>Actions for Instance {}</b>'.format(info.get('id'))
     output += at.get_html_string(attributes={
         'border': 1,
