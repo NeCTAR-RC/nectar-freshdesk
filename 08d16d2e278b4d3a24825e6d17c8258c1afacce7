@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3e27486a_052173e4",
+        "filename": "nectar_freshdesk/openstack/resource/project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-02T00:51:57Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to do a copy here",
+      "range": {
+        "startLine": 67,
+        "startChar": 20,
+        "endLine": 67,
+        "endChar": 27
+      },
+      "revId": "08d16d2e278b4d3a24825e6d17c8258c1afacce7",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f481801e_7590ebbb",
+        "filename": "nectar_freshdesk/openstack/resource/project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-02T00:51:57Z",
+      "side": 1,
+      "message": "floating ips, sec groups and rules all come from neutron and it looks like we just querying nova for quotas?",
+      "range": {
+        "startLine": 70,
+        "startChar": 14,
+        "endLine": 71,
+        "endChar": 57
+      },
+      "revId": "08d16d2e278b4d3a24825e6d17c8258c1afacce7",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
