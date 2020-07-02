@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "e2c0dd35_db8d48d3",
+        "filename": "nectar_freshdesk/openstack/resource/project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-02T01:44:59Z",
+      "side": 1,
+      "message": "you still need to _info bit so can just change this to\n\nq \u003d quotas._info\n\nyou would get the above error if you were to iterate over the quotas object, quotas._info is a dictionary",
+      "parentUuid": "f8f9fc4f_7d05edd7",
+      "range": {
+        "startLine": 67,
+        "startChar": 20,
+        "endLine": 67,
+        "endChar": 27
+      },
+      "revId": "08d16d2e278b4d3a24825e6d17c8258c1afacce7",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f481801e_7590ebbb",
         "filename": "nectar_freshdesk/openstack/resource/project.py",
         "patchSetId": 2
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "nova client returns:\nIn [77]: nova.quotas.get(\u0027f42f9588576c43969760d81384b83b1f\u0027)\nOut[77]: \u003cQuotaSet cores\u003d256, fixed_ips\u003d-1, floating_ips\u003d10, id\u003df42f9588576c43969760d81384b83b1f, injected_file_content_bytes\u003d10240, injected_file_path_bytes\u003d255, injected_files\u003d5, instances\u003d100, key_pairs\u003d100, metadata_items\u003d128, ram\u003d819200, security_group_rules\u003d20, security_groups\u003d10, server_group_members\u003d10, server_groups\u003d10\u003e",
       "parentUuid": "f481801e_7590ebbb",
+      "range": {
+        "startLine": 70,
+        "startChar": 14,
+        "endLine": 71,
+        "endChar": 57
+      },
+      "revId": "08d16d2e278b4d3a24825e6d17c8258c1afacce7",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5cf9364_2cdc2cd2",
+        "filename": "nectar_freshdesk/openstack/resource/project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-02T01:44:59Z",
+      "side": 1,
+      "message": "as discussed need to a later microversion",
+      "parentUuid": "1cf57307_be2ce67e",
       "range": {
         "startLine": 70,
         "startChar": 14,
