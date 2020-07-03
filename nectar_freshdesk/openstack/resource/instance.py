@@ -111,7 +111,7 @@ def get_instance(instance_id):
 
     # Get instance actions
     actions = nc.instance_action.list(instance_id)
-    at = PrettyTable(['action', 'date', 'user', 'project'])
+    at = PrettyTable(['Action', 'Date', 'User', 'Project'])
     at.align = 'l'
     for a in actions:
         user = clients.get_user(a.user_id)
@@ -127,9 +127,11 @@ def get_instance(instance_id):
         p = project._info
         tt = PrettyTable(['Property', 'Value'], caching=False)
         tt.align = 'l'
+        remove = ['compute_zones', 'parent_id', 'is_domain', 'tags', 'links']
         for k, v in p.items():
-            tt.add_row([k, v])
-        output += '<b>Project for Instance {}</b>'.format(info.get('id'))
+            if k not in remove:
+                tt.add_row([k, v])
+        output += '<br><b>Project for Instance {}</b>'.format(info.get('id'))
         output += tt.get_html_string(attributes={
             'border': 1,
             'style': 'border-width: 1px; border-collapse: collapse;'
