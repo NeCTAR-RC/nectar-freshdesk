@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0efbc393_536d2c9f",
+        "filename": "nectar_freshdesk/openstack/resource/instance.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2020-07-03T04:32:24Z",
+      "side": 1,
+      "message": "I think we should keep compute zones, they could be critical in figuring out the issue.\n\neg. \"I can\u0027t launch in monash-03\" A quick check of compute_zones would have the answer",
+      "range": {
+        "startLine": 130,
+        "startChar": 19,
+        "endLine": 130,
+        "endChar": 32
+      },
+      "revId": "04d5ee9be1eda1f5ca3360e3994c8b8cfb00b865",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
