@@ -22,6 +22,30 @@
       "revId": "04d5ee9be1eda1f5ca3360e3994c8b8cfb00b865",
       "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4144428_b828a0e7",
+        "filename": "nectar_freshdesk/openstack/resource/instance.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000177
+      },
+      "writtenOn": "2020-07-03T04:44:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0efbc393_536d2c9f",
+      "range": {
+        "startLine": 130,
+        "startChar": 19,
+        "endLine": 130,
+        "endChar": 32
+      },
+      "revId": "04d5ee9be1eda1f5ca3360e3994c8b8cfb00b865",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
     }
   ]
 }
