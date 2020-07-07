@@ -114,9 +114,7 @@ def get_instance(instance_id):
     at = PrettyTable(['Action', 'Date', 'User', 'Project'])
     at.align = 'l'
     for a in actions:
-        user = clients.get_user(a.user_id)
-        project = clients.get_project(a.project_id)
-        at.add_row([a.action, a.start_time, user.name, project.name])
+        at.add_row([a.action, a.start_time, a.user_id, a.project_id])
 
     output = '<b>Details for Instance {}</b>'.format(info.get('id'))
     output += pt.get_html_string(attributes={
