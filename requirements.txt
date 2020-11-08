@@ -12,3 +12,4 @@ python-neutronclient
 python-glanceclient
 python-cinderclient
 PyJWT
+ipaddress
