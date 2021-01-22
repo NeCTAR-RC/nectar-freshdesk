@@ -33,7 +33,7 @@ def get_instance(instance_id):
     try:
         instance = nc.servers.get(instance_id)
     except nova_exc.NotFound:
-        LOG.debug("Instance {} not found".format(instance_id))
+        LOG.debug("Instance %s not found", instance_id)
         return None
 
     info = instance._info.copy()
