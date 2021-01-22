@@ -1,5 +1,8 @@
 FROM ubuntu:20.04 AS base
 
+ARG UBUNTU_URL=http://download.rc.nectar.org.au/ubuntu-archive/ubuntu
+
+RUN sed -i "s#http.*/ #$UBUNTU_URL #g" /etc/apt/sources.list
 RUN apt-get update && apt-get install -y python3 python3-venv netbase
 RUN apt-get install -y --no-install-recommends \
             libpython3.$(python3 -c 'import sys; print(sys.version_info.minor);')
