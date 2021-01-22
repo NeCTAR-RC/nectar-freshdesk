@@ -2,13 +2,17 @@ PROJECT=freshdesk
 REPO=registry.rc.nectar.org.au/nectar
 
 SHA=$(shell git rev-parse --verify --short HEAD)
-TAG=$(REPO)/$(PROJECT):$(SHA)
+TAG_PREFIX=
+IMAGE_TAG := $(if $(TAG),$(TAG),$(TAG_PREFIX)$(SHA))
+IMAGE=$(REPO)/$(PROJECT):$(IMAGE_TAG)
+BUILDER=docker
+BUILDER_ARGS=
 
 
 build:
-	docker build -t $(TAG) .
+	$(BUILDER) build $(BUILDER_ARGS) -t $(IMAGE) .
 
 push:
-	docker push $(TAG)
+	$(BUILDER) push $(IMAGE)
 
 .PHONY: build push
