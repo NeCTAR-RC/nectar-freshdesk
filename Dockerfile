@@ -17,9 +17,9 @@ FROM base AS build
 
 RUN apt-get update && apt-get install -y python3-dev build-essential
 
-COPY requirements.txt /
+COPY requirements.lock /
 RUN mkdir -p /wheels/{deps,app}
-RUN python3 -m pip wheel --no-cache-dir --wheel-dir /wheels/deps -r /requirements.txt uwsgi
+RUN python3 -m pip wheel --no-cache-dir --wheel-dir /wheels/deps -r /requirements.lock uwsgi
 
 COPY . /src
 
@@ -36,9 +36,9 @@ ARG GID=42424
 ARG UID=42424
 
 COPY --from=build /wheels /wheels
-COPY requirements.txt /
+COPY requirements.lock /
 
-RUN python3 -m pip install --no-cache-dir --find-links /wheels/deps -r /requirements.txt uwsgi
+RUN python3 -m pip install --no-cache-dir --find-links /wheels/deps -r /requirements.lock uwsgi
 RUN python3 -m pip install --no-cache-dir  --find-links /wheels/app nectar-freshdesk
 RUN python3 -m pip freeze > pip-freeze.txt
 
