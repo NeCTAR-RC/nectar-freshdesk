@@ -12,7 +12,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import sys
 import time
 
 from oslo_log import log
@@ -28,6 +27,7 @@ from nectar_freshdesk.openstack.resource import instance
 from nectar_freshdesk.openstack.resource import project
 from nectar_freshdesk.openstack.resource import role
 from nectar_freshdesk.openstack.resource import user
+from nectar_freshdesk.openstack.resource import volume
 
 
 CONF = config.CONF
@@ -43,7 +43,7 @@ class FreshDeskOpenStackEndpoint(object):
             # Test for required fields
             if not all(f in info for f in config.REQUIRED_FIELDS):
                 missing = [f for f in config.REQUIRED_FIELDS if f not in info]
-                raise Exception('Required field(s) missing: %s', missing)
+                raise KeyError('Required field(s) missing: %s', missing)
 
             # Get ticket
             fd = freshdesk.get_freshdesk_client()
@@ -95,8 +95,8 @@ class FreshDeskOpenStackEndpoint(object):
 
                 if uuids:
                     # Flag as processed if we have found any uuids
+                    LOG.info('Appending tag %s', config.PROCESSED_TAG)
                     tags.append(config.PROCESSED_TAG)
-
             if details:
                 LOG.info("Creating note for ticket %s", ticket_id)
                 output = '<br>'.join(details)
@@ -115,6 +115,10 @@ class FreshDeskOpenStackEndpoint(object):
     def process_uuid(self, uuid):
         LOG.info("Getting information for: %s", uuid)
         uuid_info = instance.get_instance(uuid)
+        if uuid_info:
+            return uuid_info
+
+        uuid_info = volume.get_volume(uuid)
         if uuid_info:
             return uuid_info
 
@@ -139,15 +143,3 @@ class Agent(object):
 
         self.server.stop()
         self.server.wait()
-
-
-class main():
-    config.init(sys.argv[1:])
-    config.setup_logging(CONF)
-    LOG.info('Starting agent')
-    agent = Agent()
-    agent.run()
-
-
-if __name__ == '__main__':
-    main()

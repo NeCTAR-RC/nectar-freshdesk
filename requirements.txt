@@ -9,4 +9,5 @@ oslo.middleware
 python-keystoneclient
 python-novaclient
 python-glanceclient
+python-cinderclient
 PyJWT

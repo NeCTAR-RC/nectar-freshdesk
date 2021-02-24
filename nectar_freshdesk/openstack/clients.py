@@ -11,6 +11,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from cinderclient import client as cinder_client
 from glanceclient import client as glance_client
 
 from keystoneauth1 import exceptions as ks_exc
@@ -60,6 +61,11 @@ def get_nova_client(version='2.1'):
 def get_glance_client(version='2'):
     session = get_session()
     return glance_client.Client(version, session=session)
+
+
+def get_cinder_client(version='3'):
+    session = get_session()
+    return cinder_client.Client(version, session=session)
 
 
 def get_project(project_id):
