@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1050cf5e_415c374e",
+        "filename": "nectar_freshdesk/cmd/agent.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-04T05:39:00Z",
+      "side": 1,
+      "message": "technically should be a gap here :-)",
+      "revId": "841f3fa3702a55ae3f8961e17808ba783e67c98e",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44edb680_374fada9",
+        "filename": "nectar_freshdesk/openstack/agent.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-04T05:39:00Z",
+      "side": 1,
+      "message": "This log message doesn\u0027t make much sense",
+      "range": {
+        "startLine": 98,
+        "startChar": 30,
+        "endLine": 98,
+        "endChar": 43
+      },
+      "revId": "841f3fa3702a55ae3f8961e17808ba783e67c98e",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}
