@@ -32,7 +32,7 @@ CONF = config.cfg.CONF
 OSLO_CONTEXT = context.RequestContext()
 LOG = log.getLogger(__name__)
 
-JWT_PARAMS = ['nonce', 'state']
+JWT_PARAMS = ['nonce', 'state', 'client_id']
 
 bp = Blueprint('auth', __name__)
 
@@ -88,8 +88,11 @@ def freshdesk_simple_sso(attrs):
 
 
 def freshdesk_jwt(attrs):
-    url = CONF.freshdesk.sso_url
     key_file = CONF.freshdesk.sso_key
+
+    # Should match Redirect URL as prescribed in FD SSO settings
+    url = "{}/sp/OIDC/{}/implicit".format(
+              CONF.freshdesk.sso_url, session['client_id'])
 
     # Freshdesk required params
     # https://support.freshworks.com/support/solutions/articles/50000000670-how-to-configure-sso-with-custom-jwt-implementation
