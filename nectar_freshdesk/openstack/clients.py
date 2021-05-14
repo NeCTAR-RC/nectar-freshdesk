@@ -53,7 +53,7 @@ def get_keystone_client():
     return ks_client_v3.Client(session=session)
 
 
-def get_nova_client(version='2.1'):
+def get_nova_client(version='2.65'):
     session = get_session()
     return nova_client.Client(version, session=session)
 
