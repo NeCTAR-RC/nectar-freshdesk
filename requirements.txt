@@ -8,6 +8,7 @@ oslo.messaging
 oslo.middleware
 python-keystoneclient
 python-novaclient
+python-neutronclient
 python-glanceclient
 python-cinderclient
 PyJWT

@@ -57,6 +57,10 @@ def get_nova_client(version='2.87'):
     session = get_session()
     return nova_client.Client(version, session=session)
 
+def get_neutron_client(version='2.0'):
+    session = get_session()
+    return client.Client(version, session=session)
+
 
 def get_glance_client(version='2'):
     session = get_session()
