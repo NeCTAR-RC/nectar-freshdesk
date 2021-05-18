@@ -18,7 +18,7 @@ from keystoneauth1 import exceptions as ks_exc
 from keystoneauth1 import loading as ks_loading
 from keystoneauth1 import session as ks_session
 from keystoneclient.v3 import client as ks_client_v3
-
+from neutronclient.neutron import client as neutron_client
 from novaclient import client as nova_client
 from novaclient import exceptions as nova_exc
 
@@ -56,6 +56,11 @@ def get_keystone_client():
 def get_nova_client(version='2.87'):
     session = get_session()
     return nova_client.Client(version, session=session)
+
+
+def get_neutron_client(version='2.0'):
+    session = get_session()
+    return neutron_client.Client(version, session=session)
 
 
 def get_glance_client(version='2'):
