@@ -1,0 +1,18 @@
+FROM python:3.10-slim-bullseye AS build
+
+WORKDIR /app
+COPY . /app
+RUN python -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential gcc && \
+    python -m pip install -c https://releases.openstack.org/constraints/upper/zed -r /app/requirements.txt && \
+    python -m pip install -c https://releases.openstack.org/constraints/upper/zed .
+
+FROM python:3.10-slim-bullseye AS release
+COPY --from=build /venv /venv
+COPY --from=build /app/docker/docker-run-*.sh /
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/venv/bin:$PATH"
+EXPOSE 8613
+USER nobody

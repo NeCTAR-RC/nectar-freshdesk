@@ -13,17 +13,20 @@
 
 import flask
 
-from nectar_freshdesk.auth import api as auth
-from nectar_freshdesk import config
-from nectar_freshdesk.openstack import api as openstack
-
+from oslo_config import cfg
+from oslo_log import log as logging
 from oslo_middleware import healthcheck
+from oslo_middleware import request_id
+
+from nectar_freshdesk import config
+from nectar_freshdesk.openstack import service
 
 
-CONF = config.CONF
+CONF = cfg.CONF
+LOG = logging.getLogger(__name__)
 
 
-def create_app(conf_file=None, init_config=True):
+def create_app(test_config=None, conf_file=None, init_config=True):
     # create and configure the app
     if init_config:
         if conf_file:
@@ -31,21 +34,24 @@ def create_app(conf_file=None, init_config=True):
         else:
             config.init()
 
+        # Setup logging
+        config.setup_logging(CONF)
+
     app = flask.Flask(__name__)
+    if test_config is None:
+        app.config.from_mapping(
+            SECRET_KEY=CONF.flask.secret_key,
+        )
+    else:
+        app.config.update(test_config)
 
-    config.setup_logging(CONF)
+    # Enable debug logging set in Flask
+    if app.config['DEBUG']:
+        CONF.set_override('debug', True)
 
-    # Secret key for Flask sessions
-    app.secret_key = CONF.flask.secret_key
+    app.register_blueprint(service.bp)
 
-    # OSLO healthcheck middleware
     app.wsgi_app = healthcheck.Healthcheck(app.wsgi_app)
-
-    # OpenStack ID app
-    app.register_blueprint(openstack.bp, url_prefix='/openstack')
-
-    # Auth supporting new and old URL prefixes
-    app.register_blueprint(auth.bp, url_prefix='/auth')
-    app.register_blueprint(auth.bp, url_prefix='/pip/aaf')
+    app.wsgi_app = request_id.RequestId(app.wsgi_app)
 
     return app

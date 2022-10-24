@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -11,11 +12,18 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from nectar_freshdesk.tests.unit import base
+from oslo_config import cfg
+
+from nectar_freshdesk import app
 
 
-class TestAuthApi(base.TestCase):
+CONF = cfg.CONF
 
-    def test_sso_redirect(self):
-        response = self.client.get('/auth/login')
-        self.assertEqual(response.status_code, 302)
+
+def main():
+    application = app.create_app()
+    application.run(host=CONF.flask.host, port=CONF.flask.port)
+
+
+if __name__ == '__main__':
+    main()

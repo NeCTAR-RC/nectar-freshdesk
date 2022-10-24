@@ -14,13 +14,14 @@
 
 import sys
 
+from oslo_config import cfg
 from oslo_log import log
 
 from nectar_freshdesk import config
 from nectar_freshdesk.openstack import agent
 
 
-CONF = config.CONF
+CONF = cfg.CONF
 LOG = log.getLogger(__name__)
 
 

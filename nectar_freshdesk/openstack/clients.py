@@ -22,12 +22,11 @@ from neutronclient.neutron import client as neutron_client
 from novaclient import client as nova_client
 from novaclient import exceptions as nova_exc
 
+from oslo_config import cfg
 from oslo_log import log
 
-from nectar_freshdesk import config
 
-
-CONF = config.CONF
+CONF = cfg.CONF
 LOG = log.getLogger(__name__)
 
 _SESSION = None
@@ -48,7 +47,6 @@ def get_session():
 
 
 def get_keystone_client():
-    """Return a client for keystone v3 endpoint, optionally using a trust."""
     session = get_session()
     return ks_client_v3.Client(session=session)
 

@@ -11,12 +11,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from oslo_config import cfg
+
 import oslo_messaging
 
-from nectar_freshdesk import config
 
-
-CONF = config.CONF
+CONF = cfg.CONF
 
 
 def get_target():

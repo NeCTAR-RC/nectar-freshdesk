@@ -1,3 +1,4 @@
+pbr
 Flask
 python-freshdesk
 keystoneauth1
@@ -11,4 +12,4 @@ python-novaclient
 python-neutronclient
 python-glanceclient
 python-cinderclient
-PyJWT
+gunicorn

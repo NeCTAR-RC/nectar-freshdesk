@@ -14,6 +14,7 @@
 
 import time
 
+from oslo_config import cfg
 from oslo_log import log
 
 from nectar_freshdesk import config
@@ -30,7 +31,7 @@ from nectar_freshdesk.openstack.resource import user
 from nectar_freshdesk.openstack.resource import volume
 
 
-CONF = config.CONF
+CONF = cfg.CONF
 LOG = log.getLogger(__name__)
 
 

@@ -13,16 +13,16 @@
 
 import json
 
+from oslo_config import cfg
 from oslo_log import log
 
 from prettytable import PrettyTable
 
 from keystoneclient import exceptions as ks_exc
 
-from nectar_freshdesk import config
 from nectar_freshdesk.openstack import clients
 
-CONF = config.CONF
+CONF = cfg.CONF
 LOG = log.getLogger(__name__)
 
 

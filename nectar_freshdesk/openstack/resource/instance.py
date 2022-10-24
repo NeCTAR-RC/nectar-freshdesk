@@ -16,13 +16,13 @@ import json
 from novaclient import exceptions as nova_exc
 from prettytable import PrettyTable
 
+from oslo_config import cfg
 from oslo_log import log
 
-from nectar_freshdesk import config
 from nectar_freshdesk.openstack import clients
 
 
-CONF = config.CONF
+CONF = cfg.CONF
 LOG = log.getLogger(__name__)
 
 

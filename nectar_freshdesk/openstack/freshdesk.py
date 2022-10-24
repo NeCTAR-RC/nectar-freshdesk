@@ -13,10 +13,10 @@
 
 from freshdesk.v2.api import API as freshdesk_api
 
-from nectar_freshdesk import config
+from oslo_config import cfg
 
 
-CONF = config.CONF
+CONF = cfg.CONF
 
 
 def get_freshdesk_client():

@@ -11,15 +11,17 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import sys
+import copy
+import operator
 
 from keystoneauth1 import loading as ks_loading
-
 from oslo_config import cfg
-from oslo_log import log
+from oslo_log import log as logging
+import oslo_messaging
 
-LOG = log.getLogger(__name__)
-CONF = cfg.CONF
+LOG = logging.getLogger(__name__)
+
+PROJECT_NAME = 'nectar-freshdesk'
 
 # Tag on ticket to indicate if it's been processed
 PROCESSED_TAG = 'bot-processed'
@@ -32,27 +34,7 @@ _DEFAULT_LOG_LEVELS = ['amqp=WARN', 'amqplib=WARN',
                        'urllib3.connectionpool=WARN', 'websocket=WARN',
                        'keystonemiddleware=WARN']
 
-auth_opts = [
-    cfg.StrOpt('service_url',
-               required=True,
-               help='URL as given in the AAF Service Registration'),
-    cfg.StrOpt('aaf_login_url',
-               required=True,
-               help='AAF RapidConnect login URL'),
-    cfg.StrOpt('aaf_secret',
-               required=True,
-               secret=True,
-               help='AAF RapidConnect secret'),
-]
-
 freshdesk_opts = [
-    cfg.StrOpt('sso_url',
-               required=True,
-               help='Freshdesk SSO URL'),
-    cfg.StrOpt('sso_key',
-               required=True,
-               secret=True,
-               help='Freshdesk SSO key'),
     cfg.StrOpt('domain',
                default='dhdnectar.freshdesk.com',
                help='FreshDesk domain to use'),
@@ -63,23 +45,32 @@ freshdesk_opts = [
 
 flask_opts = [
     cfg.StrOpt('secret_key',
+               help="Flask secret key",
                secret=True),
+    cfg.StrOpt('host',
+               help="The host or IP address to bind to",
+               default='0.0.0.0'),
+    cfg.IntOpt('port',
+               help="The port to listen on",
+               default=8613),
 ]
 
 cfg.CONF.register_opts(freshdesk_opts, group='freshdesk')
 cfg.CONF.register_opts(flask_opts, group='flask')
-cfg.CONF.register_opts(auth_opts, group='auth')
 
-log.register_options(cfg.CONF)
+logging.register_options(cfg.CONF)
+
+oslo_messaging.set_transport_defaults(control_exchange='nectar-freshdesk')
 
 ks_loading.register_auth_conf_options(cfg.CONF, 'service_auth')
 
 
-def init(args=[], conf_file='/etc/nectar-freshdesk/nectar-freshdesk.conf'):
-    cfg.CONF(
-        args,
-        project='nectar-freshdesk',
-        default_config_files=[conf_file])
+def init(args=[], conf_file=None):
+    conf_files = None
+    if conf_file:
+        conf_files = [conf_file]
+    cfg.CONF(args, project=PROJECT_NAME,
+             default_config_files=conf_files)
 
 
 def setup_logging(conf):
@@ -87,8 +78,26 @@ def setup_logging(conf):
 
     :param conf: a cfg.ConfOpts object
     """
-    product_name = 'nectar-freshdesk'
-
-    log.setup(conf, product_name)
+    logging.setup(conf, PROJECT_NAME)
     LOG.info("Logging enabled!")
-    LOG.debug("command line: %s", " ".join(sys.argv))
+
+
+def add_auth_opts():
+    opts = ks_loading.register_session_conf_options(cfg.CONF, 'service_auth')
+    opt_list = copy.deepcopy(opts)
+    opt_list.insert(0, ks_loading.get_auth_common_conf_options()[0])
+    for plugin_option in ks_loading.get_auth_plugin_conf_options('password'):
+        if all(option.name != plugin_option.name for option in opt_list):
+            opt_list.append(plugin_option)
+    opt_list.sort(key=operator.attrgetter('name'))
+    return ('service_auth', opt_list)
+
+
+# Used by oslo-config-generator entry point
+# https://docs.openstack.org/oslo.config/latest/cli/generator.html
+def list_opts():
+    return [
+        ('freshdesk', freshdesk_opts),
+        ('flask', flask_opts),
+        add_auth_opts(),
+    ]

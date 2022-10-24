@@ -16,6 +16,7 @@ from flask import jsonify
 from flask import make_response
 from flask import request
 
+from oslo_config import cfg
 from oslo_context import context
 from oslo_log import log
 
@@ -23,11 +24,12 @@ from nectar_freshdesk import config
 from nectar_freshdesk.openstack import messaging
 
 
-CONF = config.CONF
-OSLO_CONTEXT = context.RequestContext()
+CONF = cfg.CONF
 LOG = log.getLogger(__name__)
+OSLO_CONTEXT = context.RequestContext()
 
-bp = Blueprint('api', __name__)
+
+bp = Blueprint('service', __name__)
 
 
 @bp.route('/addinfo', methods=['POST'])
