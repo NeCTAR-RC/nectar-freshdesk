@@ -27,20 +27,29 @@ from nectar_freshdesk.openstack.agent import FreshDeskOpenStackEndpoint
 @mock.patch('nectar_freshdesk.openstack.resource.volume.get_volume')
 @mock.patch('nectar_freshdesk.openstack.freshdesk.get_freshdesk_client')
 class TestFreshDeskOpenStackEndpoint(base.TestCase):
-
-    def test_info_raise_missing_fields(self, mock_freshdeskclient,
-                                       mock_get_volume, mock_get_user,
-                                       mock_get_roles, mock_get_project,
-                                       mock_get_instance):
+    def test_info_raise_missing_fields(
+        self,
+        mock_freshdeskclient,
+        mock_get_volume,
+        mock_get_user,
+        mock_get_roles,
+        mock_get_project,
+        mock_get_instance,
+    ):
         info = {}
         endpoint = FreshDeskOpenStackEndpoint()
         endpoint.info(None, info)
         self.assertRaises(KeyError)
 
     def test_create_ticket_add_info_no_uuid(
-            self, mock_freshdeskclient, mock_get_volume, mock_get_user,
-            mock_get_roles, mock_get_project, mock_get_instance):
-
+        self,
+        mock_freshdeskclient,
+        mock_get_volume,
+        mock_get_user,
+        mock_get_roles,
+        mock_get_project,
+        mock_get_instance,
+    ):
         fd = mock_freshdeskclient.return_value
         ticket = fd.tickets.get_ticket.return_value
         ticket.tags = [config.PROCESSED_TAG]
@@ -55,9 +64,14 @@ class TestFreshDeskOpenStackEndpoint(base.TestCase):
         fd.comments.create_note.assert_called_once_with(1234, 'user<br>roles')
 
     def test_create_ticket_add_info_uuid(
-            self, mock_freshdeskclient, mock_get_volume, mock_get_user,
-            mock_get_roles, mock_get_project, mock_get_instance):
-
+        self,
+        mock_freshdeskclient,
+        mock_get_volume,
+        mock_get_user,
+        mock_get_roles,
+        mock_get_project,
+        mock_get_instance,
+    ):
         fd = mock_freshdeskclient.return_value
         ticket = fd.tickets.get_ticket.return_value
         ticket.tags = []
@@ -75,14 +89,21 @@ class TestFreshDeskOpenStackEndpoint(base.TestCase):
         endpoint.info(None, info)
 
         fd.comments.create_note.assert_called_once_with(
-            1234, 'user<br>roles<br>instance')
+            1234, 'user<br>roles<br>instance'
+        )
         fd.tickets.update_ticket.assert_called_once_with(
-            1234, tags=[config.PROCESSED_TAG])
+            1234, tags=[config.PROCESSED_TAG]
+        )
 
     def test_update_ticket_already_processed(
-            self, mock_freshdeskclient, mock_get_volume, mock_get_user,
-            mock_get_roles, mock_get_project, mock_get_instance):
-
+        self,
+        mock_freshdeskclient,
+        mock_get_volume,
+        mock_get_user,
+        mock_get_roles,
+        mock_get_project,
+        mock_get_instance,
+    ):
         fd = mock_freshdeskclient.return_value
 
         # Already processed flag

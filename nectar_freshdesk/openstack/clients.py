@@ -39,8 +39,7 @@ def get_session():
     global _AUTH  # pylint: disable=global-statement
 
     if not _AUTH:
-        _AUTH = ks_loading.load_auth_from_conf_options(
-                CONF, 'service_auth')
+        _AUTH = ks_loading.load_auth_from_conf_options(CONF, 'service_auth')
     if not _SESSION:
         _SESSION = ks_session.Session(auth=_AUTH)
     return _SESSION
@@ -72,8 +71,7 @@ def get_cinder_client(version='3'):
 
 
 def get_project(project_id):
-    """Add access to project_cache to store all project objects
-    """
+    """Add access to project_cache to store all project objects"""
     k = get_keystone_client()
     project = None
     try:

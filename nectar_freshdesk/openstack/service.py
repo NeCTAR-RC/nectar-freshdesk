@@ -39,7 +39,7 @@ def addinfo():
     # Test valid request
     if not all(f in info for f in config.REQUIRED_FIELDS):
         missing = [f for f in config.REQUIRED_FIELDS if f not in info]
-        error = 'Required field(s) missing from request: %s' % missing
+        error = f'Required field(s) missing from request: {missing}'
         LOG.warning(error)
         return make_response(jsonify(error=error), 422)
 

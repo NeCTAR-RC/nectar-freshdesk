@@ -61,7 +61,7 @@ Enter the following:
     "source": "{{ticket.latest_public_comment}}",
     "email": "{{ticket.contact.email}}"
  }
-``` 
+```
 
 ## Testing
 

@@ -40,16 +40,16 @@ def get_instance(instance_id):
 
     # Networks
     for network_label, address_list in instance.networks.items():
-        info['%s network' % network_label] = ', '.join(address_list)
+        info[f'{network_label} network'] = ', '.join(address_list)
 
     # Flavor
     flavor_id = getattr(instance, 'flavor', {}).get('id')
     if flavor_id:
         try:
             flavor = nc.flavors.get(flavor_id)
-            info['flavor'] = '%s (%s)' % (flavor.name, flavor_id)
+            info['flavor'] = f'{flavor.name} ({flavor_id})'
         except Exception:
-            info['flavor'] = '%s (%s)' % ("Flavor not found", flavor_id)
+            info['flavor'] = '{} ({})'.format("Flavor not found", flavor_id)
 
     # Image
     image = info.get('image', {})
@@ -58,10 +58,11 @@ def get_instance(instance_id):
         try:
             img = gc.images.get(image_id)
             nectar_build = img.get('nectar_build', 'N/A')
-            info['image'] = ('%s (%s, Nectar Build %s)'
-                             % (img.name, img.id, nectar_build))
+            info['image'] = (
+                f'{img.name} ({img.id}, Nectar Build {nectar_build})'
+            )
         except Exception:
-            info['image'] = 'Image not found (%s)' % image_id
+            info['image'] = f'Image not found ({image_id})'
 
     else:  # Booted from volume
         info['image'] = "Attempt to boot from volume - no image supplied"
@@ -71,17 +72,17 @@ def get_instance(instance_id):
     if project_id:
         try:
             project = clients.get_project(project_id)
-            info['project_id'] = '%s (%s)' % (project.name, project.id)
+            info['project_id'] = f'{project.name} ({project.id})'
             # populate instance project table detail
         except Exception:
-            info['project_id'] = 'Project not found (%s)' % project_id
+            info['project_id'] = f'Project not found ({project_id})'
 
     # User
     user_id = info.get('user_id')
     if user_id:
         try:
             user = clients.get_user(user_id)
-            info['user_id'] = '%s (%s)' % (user.name, user.id)
+            info['user_id'] = f'{user.name} ({user.id})'
         except Exception:
             pass
 
@@ -117,10 +118,12 @@ def get_instance(instance_id):
         at.add_row([a.action, a.start_time, a.user_id, a.project_id])
 
     output = '<b>Details for Instance {}</b>'.format(info.get('id'))
-    output += pt.get_html_string(attributes={
-        'border': 1,
-        'style': 'border-width: 1px; border-collapse: collapse;'
-    })
+    output += pt.get_html_string(
+        attributes={
+            'border': 1,
+            'style': 'border-width: 1px; border-collapse: collapse;',
+        }
+    )
     if project:
         p = project._info
         tt = PrettyTable(['Property', 'Value'], caching=False)
@@ -128,13 +131,17 @@ def get_instance(instance_id):
         remove = ['parent_id', 'is_domain', 'tags', 'links']
         [tt.add_row([k, v]) for k, v in p.items() if k not in remove]
         output += '<br><b>Project for Instance {}</b>'.format(info.get('id'))
-        output += tt.get_html_string(attributes={
-            'border': 1,
-            'style': 'border-width: 1px; border-collapse: collapse;'
-           })
+        output += tt.get_html_string(
+            attributes={
+                'border': 1,
+                'style': 'border-width: 1px; border-collapse: collapse;',
+            }
+        )
     output += '<br><b>Actions for Instance {}</b>'.format(info.get('id'))
-    output += at.get_html_string(attributes={
-        'border': 1,
-        'style': 'border-width: 1px; border-collapse: collapse;'
-    })
+    output += at.get_html_string(
+        attributes={
+            'border': 1,
+            'style': 'border-width: 1px; border-collapse: collapse;',
+        }
+    )
     return output

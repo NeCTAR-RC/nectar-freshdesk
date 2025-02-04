@@ -21,18 +21,21 @@ CONF = cfg.CONF
 
 def get_target():
     oslo_messaging.set_transport_defaults('nectar-freshdesk')
-    return oslo_messaging.Target(exchange='nectar-freshdesk',
-                                 topic='nectar-freshdesk',
-                                 server='info',
-                                 version='1.0')
+    return oslo_messaging.Target(
+        exchange='nectar-freshdesk',
+        topic='nectar-freshdesk',
+        server='info',
+        version='1.0',
+    )
 
 
 def get_rpc_server(endpoint):
     """Return a configured oslo_messaging rpc server."""
     transport = oslo_messaging.get_rpc_transport(CONF)
     target = get_target()
-    return oslo_messaging.get_rpc_server(transport, target, [endpoint],
-                                         executor='threading')
+    return oslo_messaging.get_rpc_server(
+        transport, target, [endpoint], executor='threading'
+    )
 
 
 def get_rpc_client():

@@ -20,10 +20,10 @@ from nectar_freshdesk import app
 
 
 class TestCase(flask_testing.TestCase):
-
     def create_app(self):
         return app.create_app(
-            conf_file='nectar_freshdesk/tests/etc/nectar-freshdesk.conf')
+            conf_file='nectar_freshdesk/tests/etc/nectar-freshdesk.conf'
+        )
 
     def setUp(self):
         super().setUp()

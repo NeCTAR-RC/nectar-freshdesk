@@ -35,8 +35,7 @@ CONF = cfg.CONF
 LOG = log.getLogger(__name__)
 
 
-class FreshDeskOpenStackEndpoint(object):
-
+class FreshDeskOpenStackEndpoint:
     def info(self, ctxt, info):
         LOG.info('Processing ticket')
         details = []
@@ -85,8 +84,11 @@ class FreshDeskOpenStackEndpoint(object):
                     for ins in clients.list_instances(ip=ipv4):
                         # Nova does a greedy regex so we just need to confirm
                         # our instance actually does have the address we want
-                        if ipv4 in [y['addr'] for x in ins.addresses.values()
-                                    for y in x]:
+                        if ipv4 in [
+                            y['addr']
+                            for x in ins.addresses.values()
+                            for y in x
+                        ]:
                             uuids.append(ins.id)
 
                 for uuid in set(uuids):
@@ -127,7 +129,7 @@ class FreshDeskOpenStackEndpoint(object):
             return uuid_info
 
 
-class Agent(object):
+class Agent:
     def __init__(self):
         endpoint = FreshDeskOpenStackEndpoint()
         server = messaging.get_rpc_server(endpoint)

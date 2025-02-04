@@ -25,7 +25,7 @@ CONF = cfg.CONF
 LOG = log.getLogger(__name__)
 
 
-class main():
+class main:
     config.init(sys.argv[1:])
     config.setup_logging(CONF)
     LOG.info('Starting agent')

@@ -36,12 +36,20 @@ def get_roles(username):
 
     pt = PrettyTable(['Role', 'Project'], caching=False)
     for r in roles:
-        pt.add_row([r.role.get('name'),
-                    '%s (%s)' % (r.scope['project'].get('id'),
-                                 r.scope['project'].get('name'))])
+        pt.add_row(
+            [
+                r.role.get('name'),
+                '{} ({})'.format(
+                    r.scope['project'].get('id'),
+                    r.scope['project'].get('name'),
+                ),
+            ]
+        )
     output = '<b>Role Details</b>'
-    output += pt.get_html_string(attributes={
-        'border': 1,
-        'style': 'border-width: 1px; border-collapse: collapse;'
-    })
+    output += pt.get_html_string(
+        attributes={
+            'border': 1,
+            'style': 'border-width: 1px; border-collapse: collapse;',
+        }
+    )
     return output

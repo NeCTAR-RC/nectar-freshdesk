@@ -62,8 +62,10 @@ def get_user(username):
             pt.add_row([k, v])
 
     output = '<b>Details for User {}</b>'.format(info.get('id'))
-    output += pt.get_html_string(attributes={
-        'border': 1,
-        'style': 'border-width: 1px; border-collapse: collapse;'
-    })
+    output += pt.get_html_string(
+        attributes={
+            'border': 1,
+            'style': 'border-width: 1px; border-collapse: collapse;',
+        }
+    )
     return output

@@ -29,30 +29,30 @@ PROCESSED_TAG = 'bot-processed'
 # Fields required in JSON message
 REQUIRED_FIELDS = ('action', 'ticket_id', 'source', 'email')
 
-_DEFAULT_LOG_LEVELS = ['amqp=WARN', 'amqplib=WARN',
-                       'requests.packages.urllib3.connectionpool=WARN',
-                       'urllib3.connectionpool=WARN', 'websocket=WARN',
-                       'keystonemiddleware=WARN']
+_DEFAULT_LOG_LEVELS = [
+    'amqp=WARN',
+    'amqplib=WARN',
+    'requests.packages.urllib3.connectionpool=WARN',
+    'urllib3.connectionpool=WARN',
+    'websocket=WARN',
+    'keystonemiddleware=WARN',
+]
 
 freshdesk_opts = [
-    cfg.StrOpt('domain',
-               default='dhdnectar.freshdesk.com',
-               help='FreshDesk domain to use'),
-    cfg.StrOpt('api_key',
-               required=True,
-               help='FreshDesk API key'),
+    cfg.StrOpt(
+        'domain',
+        default='dhdnectar.freshdesk.com',
+        help='FreshDesk domain to use',
+    ),
+    cfg.StrOpt('api_key', required=True, help='FreshDesk API key'),
 ]
 
 flask_opts = [
-    cfg.StrOpt('secret_key',
-               help="Flask secret key",
-               secret=True),
-    cfg.StrOpt('host',
-               help="The host or IP address to bind to",
-               default='0.0.0.0'),
-    cfg.IntOpt('port',
-               help="The port to listen on",
-               default=8613),
+    cfg.StrOpt('secret_key', help="Flask secret key", secret=True),
+    cfg.StrOpt(
+        'host', help="The host or IP address to bind to", default='0.0.0.0'
+    ),
+    cfg.IntOpt('port', help="The port to listen on", default=8613),
 ]
 
 cfg.CONF.register_opts(freshdesk_opts, group='freshdesk')
@@ -69,8 +69,7 @@ def init(args=[], conf_file=None):
     conf_files = None
     if conf_file:
         conf_files = [conf_file]
-    cfg.CONF(args, project=PROJECT_NAME,
-             default_config_files=conf_files)
+    cfg.CONF(args, project=PROJECT_NAME, default_config_files=conf_files)
 
 
 def setup_logging(conf):

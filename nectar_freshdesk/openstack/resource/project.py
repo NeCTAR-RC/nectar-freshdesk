@@ -71,20 +71,30 @@ def get_project(project_id):
     for res, data in cq.items():
         qt.add_row([res, data['limit'], data['in_use']])
     nq = nc.show_quota_details(project_id)
-    remove = ['l7policy', 'member', 'loadbalancer', 'listener',
-              'pool', 'healthmonitor']
+    remove = [
+        'l7policy',
+        'member',
+        'loadbalancer',
+        'listener',
+        'pool',
+        'healthmonitor',
+    ]
     for res, data in nq['quota'].items():
         if res not in remove:
             qt.add_row([res, data['limit'], data['used']])
 
     output = '<b>Details for Project {}</b>'.format(info.get('id'))
-    output += pt.get_html_string(attributes={
-        'border': 1,
-        'style': 'border-width: 1px; border-collapse: collapse;'
-    })
+    output += pt.get_html_string(
+        attributes={
+            'border': 1,
+            'style': 'border-width: 1px; border-collapse: collapse;',
+        }
+    )
     output += '<b>Quota for Project {}</b>'.format(info.get('id'))
-    output += qt.get_html_string(attributes={
-        'border': 1,
-        'style': 'border-width: 1px; border-collapse: collapse;'
-    })
+    output += qt.get_html_string(
+        attributes={
+            'border': 1,
+            'style': 'border-width: 1px; border-collapse: collapse;',
+        }
+    )
     return output

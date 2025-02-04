@@ -43,17 +43,17 @@ def get_volume(volume_id):
     if project_id:
         try:
             project = clients.get_project(project_id)
-            info['project_id'] = '%s (%s)' % (project.name, project.id)
+            info['project_id'] = f'{project.name} ({project.id})'
             # populate volume project table detail
         except Exception:
-            info['project_id'] = 'Project not found (%s)' % project_id
+            info['project_id'] = f'Project not found ({project_id})'
 
     # User
     user_id = info.get('user_id')
     if user_id:
         try:
             user = clients.get_user(user_id)
-            info['user_id'] = '%s (%s)' % (user.name, user.id)
+            info['user_id'] = f'{user.name} ({user.id})'
         except Exception:
             pass
 
@@ -82,10 +82,12 @@ def get_volume(volume_id):
             pt.add_row([k, v])
 
     output = '<b>Details for Volume {}</b>'.format(info.get('id'))
-    output += pt.get_html_string(attributes={
-        'border': 1,
-        'style': 'border-width: 1px; border-collapse: collapse;'
-    })
+    output += pt.get_html_string(
+        attributes={
+            'border': 1,
+            'style': 'border-width: 1px; border-collapse: collapse;',
+        }
+    )
     if project:
         p = project._info
         tt = PrettyTable(['Property', 'Value'], caching=False)
@@ -93,8 +95,10 @@ def get_volume(volume_id):
         remove = ['parent_id', 'is_domain', 'tags', 'links']
         [tt.add_row([k, v]) for k, v in p.items() if k not in remove]
         output += '<br><b>Project for Instance {}</b>'.format(info.get('id'))
-        output += tt.get_html_string(attributes={
-            'border': 1,
-            'style': 'border-width: 1px; border-collapse: collapse;'
-        })
+        output += tt.get_html_string(
+            attributes={
+                'border': 1,
+                'style': 'border-width: 1px; border-collapse: collapse;',
+            }
+        )
     return output
