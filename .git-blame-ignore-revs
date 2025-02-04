@@ -1,0 +1,4 @@
+# You can configure git to automatically use this file with the following config:
+# git config --global blame.ignoreRevsFile .git-blame-ignore-revs
+
+7e7bf2b56d49a8dd7d5270302432fadb61dc131d  # ruff format code
