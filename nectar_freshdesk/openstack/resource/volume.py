@@ -84,7 +84,7 @@ def get_volume(volume_id):
     output = '<b>Details for Volume {}</b>'.format(info.get('id'))
     output += pt.get_html_string(
         attributes={
-            'border': 1,
+            'border': '1',
             'style': 'border-width: 1px; border-collapse: collapse;',
         }
     )
@@ -97,7 +97,7 @@ def get_volume(volume_id):
         output += '<br><b>Project for Instance {}</b>'.format(info.get('id'))
         output += tt.get_html_string(
             attributes={
-                'border': 1,
+                'border': '1',
                 'style': 'border-width: 1px; border-collapse: collapse;',
             }
         )

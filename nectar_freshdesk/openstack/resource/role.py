@@ -48,7 +48,7 @@ def get_roles(username):
     output = '<b>Role Details</b>'
     output += pt.get_html_string(
         attributes={
-            'border': 1,
+            'border': '1',
             'style': 'border-width: 1px; border-collapse: collapse;',
         }
     )
