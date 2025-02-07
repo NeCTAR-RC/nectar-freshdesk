@@ -42,4 +42,4 @@ def get_rpc_client():
     """Return a configured oslo_messaging RPCClient."""
     transport = oslo_messaging.get_rpc_transport(CONF)
     target = get_target()
-    return oslo_messaging.RPCClient(transport, target)
+    return oslo_messaging.get_rpc_client(transport, target)
