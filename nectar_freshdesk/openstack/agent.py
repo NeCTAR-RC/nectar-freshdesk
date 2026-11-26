@@ -43,7 +43,7 @@ class FreshDeskOpenStackEndpoint:
             # Test for required fields
             if not all(f in info for f in config.REQUIRED_FIELDS):
                 missing = [f for f in config.REQUIRED_FIELDS if f not in info]
-                raise KeyError('Required field(s) missing: %s', missing)
+                raise KeyError(f'Required field(s) missing: {missing}')
 
             # Get ticket
             fd = freshdesk.get_freshdesk_client()

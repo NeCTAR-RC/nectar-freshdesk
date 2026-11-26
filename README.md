@@ -46,7 +46,7 @@ On tickets with these properties:
 Perform these actions:
   - Trigger webhook
   - Request type: *POST*
-  - URL: `https://hostnameaddinfo`
+  - URL: `https://hostname/addinfo`
   - Requires authentication: enabled
   - I have an API key: ???
   - Encoding: JSON

@@ -11,24 +11,20 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import unittest
 from unittest import mock
 
-import flask_testing
 from oslo_config import cfg
 
 from nectar_freshdesk import app
 
 
-class TestCase(flask_testing.TestCase):
-    def create_app(self):
-        return app.create_app(
-            conf_file='nectar_freshdesk/tests/etc/nectar-freshdesk.conf'
-        )
-
+class TestCase(unittest.TestCase):
     def setUp(self):
         super().setUp()
+        self.app = app.create_app(
+            conf_file='nectar_freshdesk/tests/etc/nectar-freshdesk.conf'
+        )
+        self.client = self.app.test_client()
+        self.addCleanup(cfg.CONF.reset)
         self.addCleanup(mock.patch.stopall)
-
-    def tearDown(self):
-        super().tearDown()
-        cfg.CONF.reset()

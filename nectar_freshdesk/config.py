@@ -65,11 +65,11 @@ oslo_messaging.set_transport_defaults(control_exchange='nectar-freshdesk')
 ks_loading.register_auth_conf_options(cfg.CONF, 'service_auth')
 
 
-def init(args=[], conf_file=None):
+def init(args=None, conf_file=None):
     conf_files = None
     if conf_file:
         conf_files = [conf_file]
-    cfg.CONF(args, project=PROJECT_NAME, default_config_files=conf_files)
+    cfg.CONF(args or [], project=PROJECT_NAME, default_config_files=conf_files)
 
 
 def setup_logging(conf):

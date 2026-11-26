@@ -38,8 +38,9 @@ class TestFreshDeskOpenStackEndpoint(base.TestCase):
     ):
         info = {}
         endpoint = FreshDeskOpenStackEndpoint()
+        # Errors are logged, not raised, and nothing is sent to Freshdesk
         endpoint.info(None, info)
-        self.assertRaises(KeyError)
+        mock_freshdeskclient.assert_not_called()
 
     def test_create_ticket_add_info_no_uuid(
         self,
@@ -82,7 +83,7 @@ class TestFreshDeskOpenStackEndpoint(base.TestCase):
 
         endpoint = FreshDeskOpenStackEndpoint()
 
-        info = fakes.TICKET_WEBHOOK_INFO
+        info = dict(fakes.TICKET_WEBHOOK_INFO)
         info['source'] = 'Some f6933a0aa39b400dacf65909b38cc3d9 UUID'
 
         # Call the processing function
@@ -112,7 +113,7 @@ class TestFreshDeskOpenStackEndpoint(base.TestCase):
 
         endpoint = FreshDeskOpenStackEndpoint()
 
-        info = fakes.TICKET_WEBHOOK_INFO
+        info = dict(fakes.TICKET_WEBHOOK_INFO)
         info['action'] = 'update'
         info['source'] = 'Some f6933a0aa39b400dacf65909b38cc3d9 UUID'
 
