@@ -17,6 +17,7 @@ from oslo_config import cfg
 from oslo_log import log as logging
 from oslo_middleware import healthcheck
 from oslo_middleware import request_id
+from werkzeug.middleware import dispatcher
 
 from nectar_freshdesk import config
 from nectar_freshdesk.openstack import service
@@ -51,7 +52,12 @@ def create_app(test_config=None, conf_file=None, init_config=True):
 
     app.register_blueprint(service.bp)
 
-    app.wsgi_app = healthcheck.Healthcheck(app.wsgi_app)
+    # Healthcheck answers every request it is given since oslo.middleware
+    # 8.0 removed its path option, so it is mounted rather than wrapped
+    # around the application.
+    app.wsgi_app = dispatcher.DispatcherMiddleware(
+        app.wsgi_app, {'/healthcheck': healthcheck.Healthcheck(None)}
+    )
     app.wsgi_app = request_id.RequestId(app.wsgi_app)
 
     return app
