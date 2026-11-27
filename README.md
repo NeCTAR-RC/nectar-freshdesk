@@ -117,9 +117,44 @@ Run the agent:
 nectar-freshdesk-agent
 ```
 
+Run the AI triage worker (optional, see below):
+```
+nectar-freshdesk-triage
+```
+
 Simulate a FD webhook call:
 ```
 curl -X POST -H "Content-Type: application/json" --data '{"action": "create", "ticket_id": "603", "source": "ticket body 21d43012-7408-4426-8121-6b5351f63e9d", "email": "andy.botting@unimelb.edu.au"}' http://localhost:8613/addinfo
 ```
 
 For best results use a real `ticket_id` and use a UUID of an instance in the `source` field.
+
+## AI triage
+
+When `[triage] enabled` is set, the API also queues each new ticket for the
+triage worker (`nectar-freshdesk-triage`). The worker asks an AI agent on the
+Nectar agents platform to investigate the ticket and adds the answer to the
+ticket as a private note, tagged `ai-triaged`. It never replies to the
+requester.
+
+Only the ticket ID is sent to the agent, which reads the ticket itself with
+its own read-only Freshdesk access. The agent is reached over the
+[A2A protocol](https://a2a-protocol.org/) with a Keycloak client credentials
+token. The triage worker has a queue of its own, so a slow or unavailable
+agent never delays the OpenStack information notes.
+
+Create a confidential client in Keycloak with only service accounts enabled
+(no standard flow), and whatever audience mapper the agents platform route
+requires. Then add to your settings:
+
+```
+OS_TRIAGE__ENABLED=True
+OS_TRIAGE__AGENT_URL=https://agents.example.com/agents/<namespace>/<agent>
+OS_TRIAGE__TOKEN_URL=https://sso.example.com/auth/realms/<realm>/protocol/openid-connect/token
+OS_TRIAGE__CLIENT_ID=nectar-freshdesk
+OS_TRIAGE__CLIENT_SECRET=<client secret>
+```
+
+`OS_TRIAGE__ENABLED` must be set for both the API and the triage worker.
+Other options (`actions`, `timeout`, `poll_interval`, `http_timeout`,
+`retries`, `scope`) are described in `nectar_freshdesk/config.py`.

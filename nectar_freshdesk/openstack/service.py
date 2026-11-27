@@ -45,4 +45,8 @@ def addinfo():
 
     client = messaging.get_rpc_client()
     client.cast(OSLO_CONTEXT, 'info', info=info)
+
+    if CONF.triage.enabled and info.get('action') in CONF.triage.actions:
+        client = messaging.get_rpc_client(messaging.get_triage_target())
+        client.cast(OSLO_CONTEXT, 'triage', info=info)
     return jsonify(success=True)

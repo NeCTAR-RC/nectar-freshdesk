@@ -29,17 +29,30 @@ def get_target():
     )
 
 
-def get_rpc_server(endpoint):
+def get_triage_target():
+    """Target of the AI triage worker, which has a queue of its own so
+    that slow triage runs never delay the OpenStack information notes.
+    """
+    oslo_messaging.set_transport_defaults('nectar-freshdesk')
+    return oslo_messaging.Target(
+        exchange='nectar-freshdesk',
+        topic='nectar-freshdesk-triage',
+        server='triage',
+        version='1.0',
+    )
+
+
+def get_rpc_server(endpoint, target=None):
     """Return a configured oslo_messaging rpc server."""
     transport = oslo_messaging.get_rpc_transport(CONF)
-    target = get_target()
+    target = target or get_target()
     return oslo_messaging.get_rpc_server(
         transport, target, [endpoint], executor='threading'
     )
 
 
-def get_rpc_client():
+def get_rpc_client(target=None):
     """Return a configured oslo_messaging RPCClient."""
     transport = oslo_messaging.get_rpc_transport(CONF)
-    target = get_target()
+    target = target or get_target()
     return oslo_messaging.get_rpc_client(transport, target)

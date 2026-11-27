@@ -26,6 +26,9 @@ PROJECT_NAME = 'nectar-freshdesk'
 # Tag on ticket to indicate if it's been processed
 PROCESSED_TAG = 'bot-processed'
 
+# Tag on ticket to indicate the AI triage note has been added
+TRIAGE_TAG = 'ai-triaged'
+
 # Fields required in JSON message
 REQUIRED_FIELDS = ('action', 'ticket_id', 'source', 'email')
 
@@ -44,7 +47,9 @@ freshdesk_opts = [
         default='dhdnectar.freshdesk.com',
         help='FreshDesk domain to use',
     ),
-    cfg.StrOpt('api_key', required=True, help='FreshDesk API key'),
+    cfg.StrOpt(
+        'api_key', required=True, secret=True, help='FreshDesk API key'
+    ),
 ]
 
 flask_opts = [
@@ -55,7 +60,54 @@ flask_opts = [
     cfg.IntOpt('port', help="The port to listen on", default=8613),
 ]
 
+triage_opts = [
+    cfg.BoolOpt(
+        'enabled',
+        default=False,
+        help='Ask the AI triage agent to investigate tickets',
+    ),
+    cfg.StrOpt(
+        'agent_url',
+        help='A2A JSON-RPC URL of the triage agent, for example '
+        'https://agents.example.com/agents/<namespace>/<agent>',
+    ),
+    cfg.StrOpt(
+        'token_url',
+        help='Keycloak token endpoint used to get a client credentials '
+        'token for the agent',
+    ),
+    cfg.StrOpt('client_id', help='Keycloak client ID'),
+    cfg.StrOpt('client_secret', secret=True, help='Keycloak client secret'),
+    cfg.StrOpt('scope', help='Optional scope to request with the token'),
+    cfg.ListOpt(
+        'actions',
+        default=['create'],
+        help='Webhook actions that trigger a triage',
+    ),
+    cfg.IntOpt(
+        'timeout',
+        default=900,
+        help='Seconds to wait for the agent to finish a triage',
+    ),
+    cfg.IntOpt(
+        'poll_interval',
+        default=10,
+        help='Seconds between checks of a running triage',
+    ),
+    cfg.IntOpt(
+        'http_timeout',
+        default=30,
+        help='Timeout in seconds of each HTTP request to the agent',
+    ),
+    cfg.IntOpt(
+        'retries',
+        default=3,
+        help='Attempts made when the agent cannot be reached',
+    ),
+]
+
 cfg.CONF.register_opts(freshdesk_opts, group='freshdesk')
+cfg.CONF.register_opts(triage_opts, group='triage')
 cfg.CONF.register_opts(flask_opts, group='flask')
 
 logging.register_options(cfg.CONF)
@@ -98,5 +150,6 @@ def list_opts():
     return [
         ('freshdesk', freshdesk_opts),
         ('flask', flask_opts),
+        ('triage', triage_opts),
         add_auth_opts(),
     ]
